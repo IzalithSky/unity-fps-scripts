@@ -6,16 +6,17 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody rb;
     public Transform cam;
+//     public HandsAnimation hAnim;
 
     public float sens = 800f;
     public float mfrc = 50f;
     public float bfactor = 15f;
-    public float jfrc = 400f;
+    public float jfrc = 15f;
     public float maxrspd = 10f;
     public float maxwspd = 4f;
     public float aircdelay = 0.2f;
     public float jdelay = 0.2f;
-    public int fpsCap = 60;
+    public int fpsCap = 0;
 
     Vector3 moveDir = Vector3.zero;
     float maxspd = 0;
@@ -30,6 +31,8 @@ public class PlayerController : MonoBehaviour
     float maxAngle = 90f;
 
     float defaultDrag = 0f;
+
+//     bool handSwayActive = false;
 
     // Start is called before the first frame update
     void Start() {
@@ -53,39 +56,42 @@ public class PlayerController : MonoBehaviour
         cam.transform.localRotation = Quaternion.Euler(yRotate, 0.0f, 0.0f);
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * sens * Time.deltaTime);
 
-
         moveDir = (rb.transform.right * Input.GetAxisRaw("Horizontal") + rb.transform.forward * Input.GetAxisRaw("Vertical")).normalized * mfrc;
         maxspd = (Input.GetAxisRaw("Fire3") == 0f) ? maxrspd : maxwspd; // walk/run
         isJumping = Input.GetAxisRaw("Jump") != 0f;
     }
 
     void FixedUpdate() {
-        Vector3 forceTotal = Vector3.zero;
+//         handSwayActive = false;
 
         bool hasAirCountrol = (Time.time - totime) <= aircdelay;
         if (grounded || hasAirCountrol) {
-            if (moveDir == Vector3.zero || rb.velocity.magnitude >= maxspd) {
-                if (grounded) {
-                    rb.drag = bfactor;
-                }
-            } else {
-                rb.drag = defaultDrag;
-                forceTotal.x += moveDir.x;
-                forceTotal.z += moveDir.z;
+            if (moveDir != Vector3.zero && rb.velocity.magnitude < maxspd) {
+                rb.AddForce(moveDir, ForceMode.Force);
+
+//                 handSwayActive = true;
             }
+        }
+
+        if (grounded && moveDir == Vector3.zero) {
+            rb.drag = bfactor;
+        } else {
+            rb.drag = defaultDrag;
         }
 
         bool canJump = grounded && (Time.time - jtime) > jdelay;
         if (canJump) {
             if (isJumping) {
                 jtime = Time.time;
-                forceTotal.y += jfrc;
+                rb.AddForce(rb.transform.up * jfrc, ForceMode.Impulse);
             }
         }
 
-        if (forceTotal != Vector3.zero) {
-            rb.AddForce(forceTotal, ForceMode.Force);
-        }
+//         if (handSwayActive) {
+//             hAnim.Walk();
+//         } else {
+//             hAnim.Idle();
+//         }
     }
 
      void OnCollisionStay (Collision c) {
