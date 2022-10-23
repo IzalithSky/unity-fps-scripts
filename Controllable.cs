@@ -26,11 +26,6 @@ Controllable: MonoBehaviour {
     }
 
     void Update() {
-        rotationX += -Input.GetAxis("Mouse Y") * sens * Time.deltaTime;
-        rotationX = Mathf.Clamp(rotationX, -90, 90);
-        cam.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        controller.transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * sens * Time.deltaTime, 0);
-
         spd = (Input.GetAxis("Fire2") != 0) ? wspd : rspd;
         isGrounded = controller.isGrounded;
 
@@ -47,5 +42,12 @@ Controllable: MonoBehaviour {
 
         v.y += gravity * Time.deltaTime;
         controller.Move(v * Time.deltaTime);
+    }
+
+    void LateUpdate() {
+        rotationX += -Input.GetAxis("Mouse Y") * sens * Time.deltaTime;
+        rotationX = Mathf.Clamp(rotationX, -90, 90);
+        cam.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * sens * Time.deltaTime, 0);
     }
 }
