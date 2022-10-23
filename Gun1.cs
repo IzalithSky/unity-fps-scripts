@@ -7,6 +7,8 @@ public class Gun1 : MonoBehaviour
     public Transform firePoint;
     public ParticleSystem muzzleFlash;
     public GameObject impactFlash;
+    public GameObject bmark;
+    public float bmarkTtl = 20f;
 
     public float fireRateRps = 2;
 
@@ -41,6 +43,9 @@ public class Gun1 : MonoBehaviour
             if (Physics.Raycast(firePoint.position, firePoint.forward, out hit)) {
                 GameObject impfl = Instantiate(impactFlash, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impfl, impfl.GetComponent<ParticleSystem>().main.duration);
+
+                GameObject bm1 = Instantiate(bmark, hit.point + (hit.normal * .001f), Quaternion.FromToRotation(Vector3.up, hit.normal));
+                Destroy(bm1, bmarkTtl);
 
 //                 Debug.Log(hit.transform.name);
 //                 Destroy(hit.transform.gameObject);
