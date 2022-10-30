@@ -6,19 +6,21 @@ public class
 Controllable: MonoBehaviour {
     public CharacterController controller;
     public Transform cam;
+    public Tool currentTool;
 
     public float sens = 800;
     public float wspd = 4;
     public float rspd = 8;
     public int fpsCap = 0;
 
-    private float rotationX = 0;
+    float rotationX = 0;
 
-    private Vector3 v;
-    private bool isGrounded;
-    private float spd = 2.0f;
-    private float jumpHeight = 1.0f;
-    private float gravity = -9.81f;
+    Vector3 v;
+    bool isGrounded;
+    float spd = 2.0f;
+    float jumpHeight = 1.0f;
+    float gravity = -9.81f;
+    bool fireing = false;
 
     void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -26,6 +28,8 @@ Controllable: MonoBehaviour {
     }
 
     void Update() {
+        fireing = Input.GetAxis("Fire1") != 0;
+
         spd = (Input.GetAxis("Fire2") != 0) ? wspd : rspd;
         isGrounded = controller.isGrounded;
 
@@ -49,5 +53,11 @@ Controllable: MonoBehaviour {
         rotationX = Mathf.Clamp(rotationX, -90, 90);
         cam.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * sens * Time.deltaTime, 0);
+    }
+
+    void FixedUpdate() {
+        if (fireing && null != currentTool) {
+            currentTool.Fire();
+        }
     }
 }

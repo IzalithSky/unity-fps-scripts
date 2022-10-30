@@ -2,54 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gun1 : MonoBehaviour
-{
+public class Gun1 : Tool {
     public Transform firePoint;
+    public Transform lookPoint;
+    public LineRenderer tracer;
     public ParticleSystem muzzleFlash;
     public GameObject impactFlash;
     public GameObject bmark;
     public float bmarkTtl = 20f;
+    public float tracerDistance = 100f;
+    public float tracerTtl = 0.05f;
 
-    public float fireRateRps = 2;
+    protected override void FireReady() {
+        muzzleFlash.Play();
 
-    private bool ready = true;
-    private float t1;
-    private bool fireing = false;
+        RaycastHit hit;
+        if (Physics.Raycast(lookPoint.position, lookPoint.forward, out hit)) {
+            DrawTracer(firePoint.position, hit.point);
 
-    void Update() {
-        fireing = Input.GetAxis("Fire1") != 0;
-    }
+            GameObject impfl = Instantiate(impactFlash, hit.point + (hit.normal * .001f), Quaternion.LookRotation(hit.normal));
+            Destroy(impfl, impfl.GetComponent<ParticleSystem>().main.duration);
 
-    void FixedUpdate() {
-        if (fireing) {
-            Fire();
+            GameObject bm1 = Instantiate(bmark, hit.point + (hit.normal * .001f), Quaternion.FromToRotation(Vector3.up, hit.normal));
+            Destroy(bm1, bmarkTtl);
+
+            Debug.Log(hit.transform.name);
+            // Destroy(hit.transform.gameObject);
+        } else {
+            DrawTracer(firePoint.position, lookPoint.forward * tracerDistance);
         }
     }
 
-    public void Fire() {
-        if (!ready) {
-            if ((Time.time - t1) >= (1 / fireRateRps)) {
-                ready = true;
-            }
-        }
-
-        if (ready) {
-            t1 = Time.time;
-            ready = false;
-
-            muzzleFlash.Play();
-
-            RaycastHit hit;
-            if (Physics.Raycast(firePoint.position, firePoint.forward, out hit)) {
-                GameObject impfl = Instantiate(impactFlash, hit.point, Quaternion.LookRotation(hit.normal));
-                Destroy(impfl, impfl.GetComponent<ParticleSystem>().main.duration);
-
-                GameObject bm1 = Instantiate(bmark, hit.point + (hit.normal * .001f), Quaternion.FromToRotation(Vector3.up, hit.normal));
-                Destroy(bm1, bmarkTtl);
-
-//                 Debug.Log(hit.transform.name);
-//                 Destroy(hit.transform.gameObject);
-            }
-        }
+    void DrawTracer(Vector3 from, Vector3 to) {
+        LineRenderer t = Instantiate(tracer, firePoint.position, Quaternion.identity);
+        t.SetPosition(0, from);
+        t.SetPosition(1, to);
+        Destroy(t, tracerTtl);
     }
 }
