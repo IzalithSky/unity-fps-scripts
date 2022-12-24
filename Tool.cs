@@ -8,6 +8,10 @@ public class Tool : MonoBehaviour {
     protected bool ready = true;
     protected float t1;
 
+    void Start () {
+        t1 = Time.time; 
+    }
+
     public void Fire() {
         if (!ready) {
             if ((Time.time - t1) >= (1 / fireRateRps)) {
@@ -21,6 +25,15 @@ public class Tool : MonoBehaviour {
 
             FireReady();
         }
+    }
+
+    public bool IsReady() {
+        if (!ready) {
+            if ((Time.time - t1) >= (1 / fireRateRps)) {
+                ready = true;
+            }
+        }
+        return ready;
     }
 
     protected virtual void FireReady() {}

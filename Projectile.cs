@@ -24,7 +24,7 @@ public class Projectile : MonoBehaviour {
         //     bmarkLimit--;
         // }
         
-        Debug.Log(c.gameObject.name);
+        // Debug.Log(c.gameObject.name);
         Destroy(gameObject);
         // Destroy(c.gameObject);
     }

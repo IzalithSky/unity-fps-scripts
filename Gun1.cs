@@ -26,7 +26,7 @@ public class Gun1 : Tool {
             GameObject bm1 = Instantiate(bmark, hit.point + (hit.normal * .001f), Quaternion.FromToRotation(Vector3.up, hit.normal));
             Destroy(bm1, bmarkTtl);
 
-            Debug.Log(hit.transform.name);
+            // Debug.Log(hit.transform.name);
             // Destroy(hit.transform.gameObject);
         } else {
             DrawTracer(firePoint.position, lookPoint.forward * tracerDistance);
