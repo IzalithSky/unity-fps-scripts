@@ -20,10 +20,15 @@ public class MobAi : MonoBehaviour {
     public float pathFndRadius = 1.0f;
     public float strafeDelay = 5.0f;
     public float fireingRange = 15.0f;
+    public float preAttackDelay = 0.3f;
 
     AiBehMode curBehav = AiBehMode.CHASING;
+    
     bool isStrafeReady = false;
     float strafeStartTime = 0.0f;
+
+    bool isAttackReady = false;
+    float attackModeStartTime = 0.0f;
 
     void Start () {
         strafeStartTime = Time.time; 
@@ -40,6 +45,7 @@ public class MobAi : MonoBehaviour {
             case AiBehMode.CHASING:
                 if (Vector3.Distance(player.transform.position, transform.position) <= fireingRange) {
                     curBehav = AiBehMode.ATTACKING;
+                    attackModeStartTime = Time.time;
                 }
                 break;
             case AiBehMode.ATTACKING:
@@ -49,6 +55,9 @@ public class MobAi : MonoBehaviour {
                 if (!tool.IsReady()) {
                     curBehav = AiBehMode.DODGING;
                 }
+                if (Time.time - attackModeStartTime >= preAttackDelay) {
+                    isAttackReady = true;
+                }
                 break;
             case AiBehMode.DODGING:
                 if (Vector3.Distance(player.transform.position, transform.position) > fireingRange) {
@@ -56,6 +65,7 @@ public class MobAi : MonoBehaviour {
                 }
                 if (tool.IsReady()) {
                     curBehav = AiBehMode.ATTACKING;
+                    attackModeStartTime = Time.time;
                 }
                 break;
             default:
@@ -73,7 +83,12 @@ public class MobAi : MonoBehaviour {
             case AiBehMode.ATTACKING:
                 toolHolder.LookAt(player.transform);
                 nm.SetDestination(transform.position);
-                tool.Fire();
+                if (isAttackReady) {
+                    isAttackReady = false;
+                    attackModeStartTime = Time.time;
+
+                    tool.Fire();
+                }
                 break;
             case AiBehMode.DODGING:
                 toolHolder.LookAt(player.transform);
