@@ -24,6 +24,7 @@ public class Gun1 : Tool {
             Destroy(impfl, impfl.GetComponent<ParticleSystem>().main.duration);
 
             GameObject bm1 = Instantiate(bmark, hit.point + (hit.normal * .001f), Quaternion.FromToRotation(Vector3.up, hit.normal));
+            bm1.transform.parent = hit.transform.gameObject.transform;
             Destroy(bm1, bmarkTtl);
 
             // Debug.Log(hit.transform.name);

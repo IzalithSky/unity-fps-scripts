@@ -77,11 +77,11 @@ public class MobAi : MonoBehaviour {
         switch (curBehav)
         {
             case AiBehMode.CHASING:
-                toolHolder.LookAt(player.transform);
+                FaceTarget(player.transform);
                 nm.SetDestination(player.transform.position);
                 break;
             case AiBehMode.ATTACKING:
-                toolHolder.LookAt(player.transform);
+                FaceTarget(player.transform);
                 nm.SetDestination(transform.position);
                 if (isAttackReady) {
                     isAttackReady = false;
@@ -91,7 +91,7 @@ public class MobAi : MonoBehaviour {
                 }
                 break;
             case AiBehMode.DODGING:
-                toolHolder.LookAt(player.transform);
+                FaceTarget(player.transform);
                 DoStrafing();
                 break;
             default:
@@ -116,5 +116,14 @@ public class MobAi : MonoBehaviour {
                 nm.SetDestination(hit.position);
             }
         }
+    }
+
+    private void FaceTarget(Transform t) {
+        Vector3 lookPos = t.position - transform.position;
+        lookPos.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(lookPos);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, nm.angularSpeed);
+
+        toolHolder.LookAt(t);  
     }
 }
