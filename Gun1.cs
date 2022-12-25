@@ -12,6 +12,7 @@ public class Gun1 : Tool {
     public float bmarkTtl = 20f;
     public float tracerDistance = 100f;
     public float tracerTtl = 0.05f;
+    public int damage = 40;
 
     protected override void FireReady() {
         muzzleFlash.Play();
@@ -29,6 +30,7 @@ public class Gun1 : Tool {
 
             // Debug.Log(hit.transform.name);
             // Destroy(hit.transform.gameObject);
+            TryHit(hit.collider.gameObject);
         } else {
             DrawTracer(firePoint.position, lookPoint.forward * tracerDistance);
         }
@@ -39,5 +41,13 @@ public class Gun1 : Tool {
         t.SetPosition(0, from);
         t.SetPosition(1, to);
         Destroy(t, tracerTtl);
+    }
+
+    void TryHit(GameObject go) {
+        Damageable d = go.GetComponent<Damageable>();
+
+        if (d != null) {
+            d.Hit(damage);
+        }
     }
 }

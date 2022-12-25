@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour {
     public GameObject bmark;
     public float bmarkTtl = 20f;
     public int bmarkLimit = 4;
+    public int damage = 60;
 
     private void OnCollisionEnter (Collision c) {
         GameObject impfl = Instantiate(impactFlash, c.contacts[0].point, Quaternion.LookRotation(c.contacts[0].normal));
@@ -27,6 +28,7 @@ public class Projectile : MonoBehaviour {
         // Debug.Log(c.gameObject.name);
         Destroy(gameObject);
         // Destroy(c.gameObject);
+        TryHit(c.gameObject);
     }
 
     void Start() {
@@ -39,5 +41,13 @@ public class Projectile : MonoBehaviour {
         // }
 
         Destroy(gameObject, timeoutSec);
+    }
+
+    void TryHit(GameObject go) {
+        Damageable d = go.GetComponent<Damageable>();
+
+        if (d != null) {
+            d.Hit(damage);
+        }
     }
 }

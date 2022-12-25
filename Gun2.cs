@@ -6,6 +6,7 @@ public class Gun2 : Tool {
     public Transform firePoint;
     public GameObject impactFlash;
     public GunAnimation anim;
+    public int damage = 20;
 
     public float range = 1;
     public float splash = .2f;
@@ -20,6 +21,15 @@ public class Gun2 : Tool {
 
             // Debug.Log(hit.transform.name);
             // Destroy(hit.transform.gameObject);
+            TryHit(hit.collider.gameObject);
         }   
+    }
+
+    void TryHit(GameObject go) {
+        Damageable d = go.GetComponent<Damageable>();
+
+        if (d != null) {
+            d.Hit(damage);
+        }
     }
 }
