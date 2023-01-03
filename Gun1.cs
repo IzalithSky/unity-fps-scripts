@@ -5,7 +5,7 @@ using UnityEngine;
 public class Gun1 : Tool {
     public Transform firePoint;
     public Transform lookPoint;
-    public LineRenderer tracer;
+    public GameObject tracer;
     public ParticleSystem muzzleFlash;
     public GameObject impactFlash;
     public GameObject bmark;
@@ -37,9 +37,9 @@ public class Gun1 : Tool {
     }
 
     void DrawTracer(Vector3 from, Vector3 to) {
-        LineRenderer t = Instantiate(tracer, firePoint.position, Quaternion.identity);
-        t.SetPosition(0, from);
-        t.SetPosition(1, to);
+        GameObject t = Instantiate(tracer, firePoint.position, Quaternion.identity);
+        t.GetComponent<LineRenderer>().SetPosition(0, from);
+        t.GetComponent<LineRenderer>().SetPosition(1, to);
         Destroy(t, tracerTtl);
     }
 
