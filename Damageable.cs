@@ -20,7 +20,7 @@ public class Damageable : MonoBehaviour {
             hp -= damage;
         }
         if (!IsAlive()) {
-            Debug.Log("DEAD!");
+            Destroy(gameObject);
         }
     }
 

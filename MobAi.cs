@@ -43,13 +43,19 @@ public class MobAi : MonoBehaviour {
         switch (curBehav)
         {
             case AiBehMode.CHASING:
-                if (Vector3.Distance(player.transform.position, transform.position) <= fireingRange) {
+                if (Vector3.Distance(
+					player.transform.position,
+					transform.position) <= fireingRange) {
+						
                     curBehav = AiBehMode.ATTACKING;
                     attackModeStartTime = Time.time;
                 }
                 break;
             case AiBehMode.ATTACKING:
-                if (Vector3.Distance(player.transform.position, transform.position) > fireingRange) {
+                if (Vector3.Distance(
+					player.transform.position, 
+					transform.position) > fireingRange) {
+						
                     curBehav = AiBehMode.CHASING;
                 }
                 if (!tool.IsReady()) {
@@ -60,7 +66,11 @@ public class MobAi : MonoBehaviour {
                 }
                 break;
             case AiBehMode.DODGING:
-                if (Vector3.Distance(player.transform.position, transform.position) > fireingRange) {
+                if (nm.remainingDistance <= nm.stoppingDistance
+                    && Vector3.Distance(
+					    player.transform.position, 
+					    transform.position) > fireingRange) {
+						
                     curBehav = AiBehMode.CHASING;
                 }
                 if (tool.IsReady()) {
@@ -110,9 +120,16 @@ public class MobAi : MonoBehaviour {
             strafeStartTime = Time.time;
             isStrafeReady = false;
 
-            Vector3 rndPos = transform.position + Random.insideUnitSphere * walkRadius;
+            Vector3 rndPos = transform.position 
+				+ Random.insideUnitSphere * walkRadius;
+				
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(rndPos, out hit, pathFndRadius, NavMesh.AllAreas)) {
+            if (NavMesh.SamplePosition(
+					rndPos, 
+					out hit, 
+					pathFndRadius, 
+					NavMesh.AllAreas)) {
+						
                 nm.SetDestination(hit.position);
             }
         }
@@ -122,7 +139,10 @@ public class MobAi : MonoBehaviour {
         Vector3 lookPos = t.position - transform.position;
         lookPos.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, nm.angularSpeed);
+        transform.rotation = Quaternion.Slerp(
+								transform.rotation, 
+								rotation, 
+								nm.angularSpeed);
 
         toolHolder.LookAt(t);  
     }
