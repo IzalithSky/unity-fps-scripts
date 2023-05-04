@@ -67,6 +67,7 @@ public class MovementController : MonoBehaviour
         if (canJump) {
             if (il.GetIsJumping()) {
                 jtime = Time.time;
+                rb.drag = defaultDrag;
                 rb.AddForce(rb.transform.up * jfrc, ForceMode.Impulse);
             }
         }

@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour {
     public float bmarkTtl = 20f;
     public int bmarkLimit = 4;
     public int damage = 60;
+    public GameObject launcher; 
 
     private void OnCollisionEnter (Collision c) {
         GameObject impfl = Instantiate(impactFlash, c.contacts[0].point, Quaternion.LookRotation(c.contacts[0].normal));
@@ -25,9 +26,7 @@ public class Projectile : MonoBehaviour {
         //     bmarkLimit--;
         // }
         
-        // Debug.Log(c.gameObject.name);
         Destroy(gameObject);
-        // Destroy(c.gameObject);
         TryHit(c.gameObject);
     }
 
@@ -39,6 +38,11 @@ public class Projectile : MonoBehaviour {
         //         Random.Range(128, 255),
         //         255f);
         // }
+        // Ignore collisions between the projectile and the character that launched it.
+        
+        if (null != launcher) {
+            Physics.IgnoreCollision(GetComponent<Collider>(), launcher.GetComponent<Collider>());
+        }
 
         Destroy(gameObject, timeoutSec);
     }
