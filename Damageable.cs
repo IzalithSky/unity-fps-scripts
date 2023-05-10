@@ -11,6 +11,10 @@ public class Damageable : MonoBehaviour {
         hp = maxHp;
     }
 
+    public int GetHp() {
+        return hp;
+    }
+
     public bool IsAlive() {
         return hp >= 0;
     }
@@ -20,7 +24,7 @@ public class Damageable : MonoBehaviour {
             hp -= damage;
         }
         if (!IsAlive()) {
-            Destroy(gameObject);
+            Die();
         }
     }
 
@@ -32,4 +36,6 @@ public class Damageable : MonoBehaviour {
             }
         }
     }
+
+    public virtual void Die() {}
 }
