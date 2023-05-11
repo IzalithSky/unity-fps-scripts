@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Respawnable : Damageable
 {
+    public Transform respawn;
+
     public override void Die() {
-        Debug.Log("oof");
+        hp = maxHp;
+        transform.position = respawn.position;
+        transform.rotation = respawn.rotation;
     }
 }

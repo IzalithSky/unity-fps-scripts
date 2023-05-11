@@ -30,7 +30,6 @@ public class MobAi : MonoBehaviour {
     bool isAttackReady = false;
     float attackModeStartTime = 0.0f;
 
-    Vector3 rndPos;
 
     void Start () {
         strafeStartTime = Time.time; 
@@ -122,7 +121,7 @@ public class MobAi : MonoBehaviour {
             strafeStartTime = Time.time;
             isStrafeReady = false;
 
-            rndPos = transform.position 
+            Vector3 rndPos = transform.position 
 				+ Random.insideUnitSphere * walkRadius;
 				
             NavMeshHit hit;
@@ -151,6 +150,6 @@ public class MobAi : MonoBehaviour {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(rndPos, 1f);
+        Gizmos.DrawWireSphere(nm.destination, 1f);
     }
 }
