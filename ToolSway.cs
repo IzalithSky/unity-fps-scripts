@@ -7,7 +7,7 @@ public class ToolSway : MonoBehaviour {
     public float maxamount = 20f;
     public float smooth = 3f;
     public float rightOffset = .3f;
-    public float walkSwayIntensity = 0.01f;
+    public float walkSwayIntensity = 0.0025f;
     
     Quaternion defaultRotation;
     Vector3 defaultPosition;

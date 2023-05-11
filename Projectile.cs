@@ -38,8 +38,11 @@ public class Projectile : MonoBehaviour {
         //         Random.Range(128, 255),
         //         255f);
         // }
+
+        int projLayer = LayerMask.NameToLayer("Projectiles");
+        Physics.IgnoreLayerCollision(projLayer, projLayer);
+
         // Ignore collisions between the projectile and the character that launched it.
-        
         if (null != launcher) {
             Physics.IgnoreCollision(GetComponent<Collider>(), launcher.GetComponent<Collider>());
         }

@@ -6,7 +6,7 @@ public class Gun0 : Tool {
     public GameObject projectilePrefab;
     public Transform firePoint;
     public Transform lookPoint;
-    public float fireForce = 200f;
+    public float fireForce = 20f;
     public GameObject owner;
 
     protected override void FireReady() {

@@ -62,6 +62,26 @@ public class MovementController : MonoBehaviour
                 rb.drag = defaultDrag;
                 rb.AddForce(moveDir, ForceMode.Force);
             }
+        } else if (!grounded && !hasAirCountrol) {
+            // Apply air steering
+            float horizontalInput = il.GetInputHorizontal();
+            float verticalInput = il.GetInputVertical();
+
+            Vector3 airSteerDir = rb.velocity.normalized;
+            airSteerDir.y = 0f; // Disable vertical movement during air steering
+
+            Quaternion rotation = Quaternion.LookRotation(airSteerDir);
+            Vector3 localInput = new Vector3(horizontalInput, 0f, verticalInput);
+            Vector3 rotatedInput = rotation * localInput;
+
+            // Calculate the air steering force
+            Vector3 airSteerForce = rotatedInput.normalized * mfrc;
+
+            // Calculate the existing horizontal momentum
+            Vector3 horizontalMomentum = Vector3.ProjectOnPlane(rb.velocity, Vector3.up);
+
+            // Apply the air steering force while canceling the existing horizontal momentum
+            rb.AddForce(airSteerForce - horizontalMomentum, ForceMode.Force);
         }
 
         bool canJump = grounded && (Time.time - jtime) > jdelay;
