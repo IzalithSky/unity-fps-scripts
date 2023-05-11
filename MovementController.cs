@@ -9,7 +9,7 @@ public class MovementController : MonoBehaviour
     public float aircdelay = 0.5f;
     public float jdelay = 0.2f;
     public float bfactor = 15f;
-    public float jfrc = 15f;
+    public float jfrc = 5f;
     public float mfrc = 50f; 
 
     Rigidbody rb;
@@ -45,12 +45,12 @@ public class MovementController : MonoBehaviour
         maxspd = il.GetIsWalking() ? maxrspd : maxwspd; // walk/run
 
         bool wasGrounded = grounded;
-        grounded = Physics.Raycast(transform.position, Vector3.down, 1.2f);
+        grounded = Physics.Raycast(transform.position, Vector3.down, 1.05f);
         if (!grounded && wasGrounded) {
             totime = Time.time;
         }
 
-        if (grounded && moveDir == Vector3.zero) {
+        if (grounded) {
             rb.drag = bfactor;
         } else {
             rb.drag = defaultDrag;
@@ -59,6 +59,7 @@ public class MovementController : MonoBehaviour
         bool hasAirCountrol = (Time.time - totime) <= aircdelay;
         if (grounded || hasAirCountrol) {
             if (moveDir != Vector3.zero && rb.velocity.magnitude < maxspd) {
+                rb.drag = defaultDrag;
                 rb.AddForce(moveDir, ForceMode.Force);
             }
         }
