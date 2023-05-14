@@ -5,10 +5,7 @@ using UnityEngine;
 public class ProjectileShotgun : Tool
 {
     public GameObject projectilePrefab;
-    public Transform firePoint;
-    public Transform lookPoint;
     public float fireForce = 20f;
-    public GameObject owner;
 
     public int pelletCount = 8; // Number of projectiles to fire in the spread
     public float spreadAngle = 8f; // Spread angle in degrees

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Tool : MonoBehaviour {
     public float fireRateRps = 1f;
+    public Transform firePoint;
+    public Transform lookPoint;
+    public GameObject owner;
 
     protected bool ready = true;
     protected float t1;

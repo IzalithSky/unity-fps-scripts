@@ -6,6 +6,7 @@ public class InputListener : MonoBehaviour
 {
     public float sensHorizontal = 800f;
     public float sensVertical = 800f;
+    public int toolListLength = 6;
 
     float inputHorizontal = 0f;
     float inputVertical = 0f;
@@ -14,37 +15,51 @@ public class InputListener : MonoBehaviour
     bool isJumping = false;
     bool isWalking = false;
     bool isFiring = false;
+    List<bool> isTool; // Array to store the tool states
 
-    public float GetInputHorizontal() {
+    public float GetInputHorizontal()
+    {
         return inputHorizontal;
     }
 
-    public float GetInputVertical() {
+    public float GetInputVertical()
+    {
         return inputVertical;
     }
 
-    public float GetCameraHorizontal() {
+    public float GetCameraHorizontal()
+    {
         return cameraHorizontal;
     }
 
-    public float GetCameraVertical() {
+    public float GetCameraVertical()
+    {
         return cameraVertical;
     }
 
-    public bool GetIsJumping() {
+    public bool GetIsJumping()
+    {
         return isJumping;
     }
 
-    public bool GetIsWalking() {
+    public bool GetIsWalking()
+    {
         return isWalking;
     }
 
-    public bool GetIsFiring() {
+    public bool GetIsFiring()
+    {
         return isFiring;
     }
 
+    public bool GetIsTool(int toolIndex)
+    {
+        return Input.GetAxis($"Tool {toolIndex}") != 0f;
+    }
+
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         inputHorizontal = Input.GetAxisRaw("Horizontal");
         inputVertical = Input.GetAxisRaw("Vertical");
         isWalking = Input.GetAxisRaw("Fire3") != 0f;

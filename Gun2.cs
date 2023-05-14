@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Gun2 : Tool {
-    public Transform firePoint;
     public GameObject impactFlash;
     public GunAnimation anim;
     public int damage = 20;

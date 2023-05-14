@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class Gun0 : Tool {
     public GameObject projectilePrefab;
-    public Transform firePoint;
-    public Transform lookPoint;
     public float fireForce = 20f;
-    public GameObject owner;
 
     protected override void FireReady() {
         GameObject proj = Instantiate(projectilePrefab, firePoint.position, (null !=  lookPoint) ? lookPoint.rotation : firePoint.rotation);

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Gun1 : Tool {
-    public Transform firePoint;
-    public Transform lookPoint;
     public GameObject tracer;
     public ParticleSystem muzzleFlash;
     public GameObject impactFlash;

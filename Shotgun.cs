@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Shotgun : Tool
 {
-    public Transform firePoint;
-    public Transform lookPoint;
     public GameObject tracer;
     public ParticleSystem muzzleFlash;
     public GameObject impactFlash;
