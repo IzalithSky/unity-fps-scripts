@@ -7,6 +7,9 @@ public class Tool : MonoBehaviour {
     public Transform firePoint;
     public Transform lookPoint;
     public GameObject owner;
+    public string toolName;
+    public int ammoCount = 0;
+    public bool usesAmmo = false;
 
     protected bool ready = true;
     protected float t1;
@@ -16,6 +19,10 @@ public class Tool : MonoBehaviour {
     }
 
     public void Fire() {
+        if (usesAmmo && ammoCount <= 0) {
+            return;
+        }
+
         if (!ready) {
             if ((Time.time - t1) >= (1 / fireRateRps)) {
                 ready = true;
@@ -25,6 +32,10 @@ public class Tool : MonoBehaviour {
         if (ready) {
             t1 = Time.time;
             ready = false;
+            
+            if (usesAmmo) {
+                ammoCount--;
+            }
 
             FireReady();
         }

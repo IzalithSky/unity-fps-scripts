@@ -21,8 +21,6 @@ public class ToolsController : MonoBehaviour
     }
 
     void SetTool(int toolIndex) {
-        Debug.Log(toolIndex);
-
         if (null != toolHolder.currentTool) {
             Destroy(toolHolder.currentTool.gameObject);
         }
